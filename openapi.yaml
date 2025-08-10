@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info:
+  title: API de Reportes
+  version: 1.0.0
+  description: API para recibir y servir reportes con coordenadas, fecha e imagen.
+
+paths:
+  /reportes:
+    post:
+      summary: Crear un nuevo reporte
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lat:
+                  type: number
+                  format: float
+                  example: 14.004107
+                lon:
+                  type: number
+                  format: float
+                  example: -74.806981
+                fecha:
+                  type: string
+                  format: date
+                  example: "2025-10-10"
+                foto_base64:
+                  type: string
+                  description: Imagen codificada en base64
+                  example: "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAIAAACRXR/mAAA..."
+              required:
+                - lat
+                - lon
+                - fecha
+                - foto_base64
+      responses:
+        '201':
+          description: Reporte creado correctamente
+        '400':
+          description: Solicitud inválida
+
+    get:
+      summary: Obtener todos los reportes
+      responses:
+        '200':
+          description: Lista de reportes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    lat:
+                      type: number
+                      format: float
+                    lon:
+                      type: number
+                      format: float
+                    fecha:
+                      type: string
+                      format: date
+                    foto_base64:
+                      type: string
