@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: API de Reportes
-  version: 1.0.0
-  description: API para recibir y servir reportes con coordenadas, fecha e imagen.
+  version: 1.1.0
+  description: API para recibir, servir y borrar reportes con coordenadas, fecha e imagen.
 
 paths:
   /reportes:
@@ -25,8 +25,8 @@ paths:
                   example: -74.806981
                 fecha:
                   type: string
-                  format: date
-                  example: "2025-10-10"
+                  format: date-time
+                  example: "2025-10-10T14:48:00.000Z"
                 foto_base64:
                   type: string
                   description: Imagen codificada en base64
@@ -39,6 +39,14 @@ paths:
       responses:
         '201':
           description: Reporte creado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    example: "Reporte recibido con éxito"
         '400':
           description: Solicitud inválida
 
@@ -62,6 +70,23 @@ paths:
                       format: float
                     fecha:
                       type: string
-                      format: date
+                      format: date-time
                     foto_base64:
                       type: string
+
+  /borrar_todos:
+    delete:
+      summary: Borrar todos los reportes
+      responses:
+        '200':
+          description: Confirmación de borrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    example: "Todos los reportes han sido eliminados"
+        '500':
+          description: Error interno del servidor
