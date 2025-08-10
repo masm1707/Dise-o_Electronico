@@ -53,7 +53,3 @@ La página web consume el endpoint GET `/reportes` y muestra:
 - Información detallada y foto (al hacer clic desde la lista de reportes para agrandarla)
 - Permite borrar todos los reportes realizados con anterioridad con botón
 
----
-
-## 📂 Estructura del repositorio
-
