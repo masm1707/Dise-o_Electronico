@@ -137,21 +137,22 @@
                         // Tarjeta de reporte
                         const card = document.createElement('div');
                         card.className = 'report-card';
-                        card.innerHTML = `
+                        card.innerHTML = ` 
                             <h3>Reporte #${index+1}</h3>
                             <p><b>📅 Fecha:</b> ${rep.fecha}</p>
                             <p><b>🌍 Ubicación:</b> ${rep.lat}, ${rep.lon}</p>
-                            ${rep.foto_base64 ? `<img src="data:image/png;base64,${rep.foto_base64}" alt="Foto reporte">` : '<p>Sin foto</p>'}
+                            ${rep.foto_base64 ? `<p><b>📷 Imagen:</b> <span class="open-image" style="cursor:pointer; color:#FFD700; text-decoration: underline;">🔍</span></p>` : '<p><b>📷 Imagen:</b> Sin foto</p>'}
                         `;
                         listContainer.appendChild(card);
 
-                        // Modal al hacer clic en la imagen
+                        // Modal al hacer clic en el texto "Imagen 🔍"
                         if (rep.foto_base64) {
-                            card.querySelector('img').addEventListener('click', () => {
+                            card.querySelector('.open-image').addEventListener('click', () => {
                                 document.getElementById('modal-img').src = `data:image/png;base64,${rep.foto_base64}`;
                                 document.getElementById('modal').style.display = 'flex';
                             });
                         }
+
                     }
                 });
             });
