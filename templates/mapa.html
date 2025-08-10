@@ -20,6 +20,22 @@
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
         }
+        #btn-borrar {
+            background: linear-gradient(135deg, #ff4e50, #fc913a);
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.7em;
+            margin-right: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        #btn-borrar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
         #map {
             height: 60vh;
             width: 100%;
@@ -81,7 +97,8 @@
     </style>
 </head>
 <body>
-    <header>📍 Mapa de Reportes</header>
+    <header>📍 Reportes</header>
+    <button id="btn-borrar">🗑 Borrar todos</button>
     <div id="map"></div>
     <div class="report-list" id="report-list"></div>
 
@@ -138,6 +155,18 @@
                     }
                 });
             });
+        
+        // Botón borrar todos
+        document.getElementById('btn-borrar').addEventListener('click', () => {
+            if (confirm("¿Seguro que quieres borrar todos los reportes?")) {
+                fetch('/borrar_todos', { method: 'DELETE' })
+                    .then(res => res.json())
+                    .then(data => {
+                        alert(data.mensaje);
+                        location.reload();
+                    });
+            }
+        });
 
         // Cerrar modal
         document.getElementById('modal').addEventListener('click', () => {

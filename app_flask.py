@@ -68,5 +68,15 @@ def obtener_reportes():
 def home():
     return render_template('mapa.html')
 
+@app.route("/borrar_todos", methods=["DELETE"])
+def borrar_todos():
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute("DELETE FROM reportes")
+    conn.commit()
+    conn.close()
+    return jsonify({"mensaje": "Todos los reportes han sido eliminados"}), 200
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
