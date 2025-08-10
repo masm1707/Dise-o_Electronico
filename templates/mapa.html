@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa de Reportes</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            color: #fff;
+        }
+        header {
+            text-align: center;
+            padding: 15px;
+            font-size: 1.8em;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        #map {
+            height: 60vh;
+            width: 100%;
+            border-bottom: 3px solid rgba(255,255,255,0.2);
+        }
+        .report-list {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .report-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+        .report-card h3 {
+            margin-top: 0;
+            font-size: 1.3em;
+            color: #FFD700;
+        }
+        .report-card p {
+            margin: 5px 0;
+            font-size: 0.95em;
+            color: #e0e0e0;
+        }
+        .report-card img {
+            max-width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .report-card img:hover {
+            transform: scale(1.05);
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body>
+    <header>📍 Mapa de Reportes</header>
+    <div id="map"></div>
+    <div class="report-list" id="report-list"></div>
+
+    <!-- Modal para ver imágenes grandes -->
+    <div class="modal" id="modal">
+        <img id="modal-img" src="">
+    </div>
+
+    <script>
+        const map = L.map('map').setView([0, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        fetch('/reportes')
+            .then(res => res.json())
+            .then(data => {
+                const listContainer = document.getElementById('report-list');
+                data.forEach((rep, index) => {
+                    if (rep.lat !== null && rep.lon !== null) {
+                        // Marcador numerado con estilo
+                        const marker = L.marker([rep.lat, rep.lon], {
+                            icon: L.divIcon({
+                                className: 'custom-div-icon',
+                                html: `<div style="background:#FFD700;color:black;font-weight:bold;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;border:2px solid white;">${index+1}</div>`,
+                                iconSize: [28, 28]
+                            })
+                        }).addTo(map);
+
+                        marker.bindPopup(`
+                            <b>${index+1}. Fecha:</b> ${rep.fecha} <br>
+                            ${rep.foto_base64 ? `<img src="data:image/png;base64,${rep.foto_base64}" width="150">` : 'Sin foto'}
+                        `);
+
+                        // Tarjeta de reporte
+                        const card = document.createElement('div');
+                        card.className = 'report-card';
+                        card.innerHTML = `
+                            <h3>Reporte #${index+1}</h3>
+                            <p><b>📅 Fecha:</b> ${rep.fecha}</p>
+                            <p><b>🌍 Ubicación:</b> ${rep.lat}, ${rep.lon}</p>
+                            ${rep.foto_base64 ? `<img src="data:image/png;base64,${rep.foto_base64}" alt="Foto reporte">` : '<p>Sin foto</p>'}
+                        `;
+                        listContainer.appendChild(card);
+
+                        // Modal al hacer clic en la imagen
+                        if (rep.foto_base64) {
+                            card.querySelector('img').addEventListener('click', () => {
+                                document.getElementById('modal-img').src = `data:image/png;base64,${rep.foto_base64}`;
+                                document.getElementById('modal').style.display = 'flex';
+                            });
+                        }
+                    }
+                });
+            });
+
+        // Cerrar modal
+        document.getElementById('modal').addEventListener('click', () => {
+            document.getElementById('modal').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
