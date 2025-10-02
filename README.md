@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📍 Proyecto API de Reportes Geográficos
 
 Este proyecto implementa una **API REST** para recibir y servir reportes con coordenadas GPS, fecha e imagen en base64, junto con una **página web** que muestra estos reportes en un mapa interactivo.
@@ -53,3 +54,21 @@ La página web consume el endpoint GET `/reportes` y muestra:
 - Información detallada y foto (al hacer clic desde la lista de reportes para agrandarla)
 - Permite borrar todos los reportes realizados con anterioridad con botón
 
+=======
+# miguecoordenadas
+
+A new Flutter project.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+>>>>>>> 9665358 (Versión inicial: app con login)

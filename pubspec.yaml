@@ -1,0 +1,33 @@
+name: miguecoordenadas
+description: App de envío de coordenadas + imagen
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Ubicación GPS
+  geolocator: ^13.0.1
+
+  # HTTP para conectar con el backend
+  http: ^1.2.2
+
+  # Selección de imágenes (galería o cámara)
+  image_picker: ^1.1.2
+
+  # Almacenamiento local (guardar token JWT, user, etc.)
+  shared_preferences: ^2.3.3
+
+  # Notificaciones locales
+  flutter_local_notifications: ^17.2.1+2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
